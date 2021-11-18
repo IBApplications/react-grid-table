@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { SortableContainer } from "./drag-and-drop";
-import { Row, HeaderCellContainer } from "./components/";
+import { Columns, Row, HeaderCellContainer } from "./components/";
 import { useTableManager } from "./hooks/";
 import PropTypes from "prop-types";
 import "./index.css";
@@ -28,7 +28,7 @@ export const GridTable = (props) => {
         refs: { rgtRef, tableRef },
         columnsApi: { visibleColumns },
         columnsReorderApi: { onColumnReorderStart, onColumnReorderEnd },
-        rowVirtualizer: { virtualItems },
+        rowVirtualizer: { virtualItems, totalSize },
         paginationApi: { pageRows },
         rowsApi: { totalRows },
     } = tableManager;
@@ -39,8 +39,31 @@ export const GridTable = (props) => {
         return rest;
     }, {});
 
+    const gridTemplate = useMemo(() => {
+        // get column names & sizes
+        const names = visibleColumns.map((column, idx) => column.field ?? (column.id || `col-${idx}`));
+        const sizes = visibleColumns.map(column => column.width);
+    
+        // convert to 'grid-template-*' style
+        const gridAreas = `'${names.join(' ')}'`;
+        const gridSizes = sizes.join(' ');
+
+        return {
+            areas: gridAreas,
+            sizes: gridSizes
+        };
+    }, [visibleColumns]);
+
+    // const rowsSizes = `repeat(${pageRows.length + 1 + (isVirtualScroll ? 1 : 0)}, max-content)`;
+    
     const classNames = ("rgt-wrapper " + (props.className || "")).trim();
     const showHeader = (showSearch || showColumnVisibilityManager);
+
+    console.log('[wrapper] render: ', {
+        // rowsSizes,
+        visibleColumns,
+        gridTemplate
+    });
 
     return (
         <div {...rest} ref={rgtRef} id={id} className={classNames}>
@@ -56,58 +79,69 @@ export const GridTable = (props) => {
                 useDragHandle={!!DragHandle}
                 onSortStart={onColumnReorderStart}
                 onSortEnd={onColumnReorderEnd}
-                style={{
-                    display: "grid",
-                    overflow: "auto",
-                    flex: 1,
-                    gridTemplateColumns: visibleColumns
-                        .map((column) => column.width)
-                        .join(" "),
-                    gridTemplateRows: `repeat(${
-                        pageRows.length + 1 + (isVirtualScroll ? 1 : 0)
-                    }, max-content)`,
-                }}
             >
-                {visibleColumns.map((visibleColumn, idx) => (
-                    <HeaderCellContainer
-                        key={visibleColumn.id}
-                        index={idx}
-                        column={visibleColumn}
-                        tableManager={tableManager}
-                    />
-                ))}
-                {totalRows && visibleColumns.length > 1
-                    ? isVirtualScroll
-                        ? [
-                              <Row
-                                  key={"virtual-start"}
-                                  index={"virtual-start"}
-                                  tableManager={tableManager}
-                              />,
-                              ...virtualItems.map((virtualizedRow) => (
-                                  <Row
-                                      key={virtualizedRow.index}
-                                      index={virtualizedRow.index}
-                                      data={pageRows[virtualizedRow.index]}
-                                      measureRef={virtualizedRow.measureRef}
-                                      tableManager={tableManager}
-                                  />
-                              )),
-                              <Row
-                                  key={"virtual-end"}
-                                  index={"virtual-end"}
-                                  tableManager={tableManager}
-                              />,
-                          ]
-                        : pageRows.map((rowData, index) => (
-                              <Row
-                                  key={rowData?.[rowIdField]}
-                                  index={index}
-                                  data={rowData}
-                                  tableManager={tableManager}
-                              />
-                          ))
+                {/* HEADER */}
+                <Columns
+                    className="rgt-header-cells"
+                    // className="rgt-header-cells rgt-header-cells--sticky"
+                    areas={gridTemplate.areas}
+                    sizes={gridTemplate.sizes}
+                >
+                    {visibleColumns.map((visibleColumn, idx) => (
+                        <HeaderCellContainer
+                            key={visibleColumn.id}
+                            index={idx}
+                            column={visibleColumn}
+                            tableManager={tableManager}
+                        />
+                    ))}
+                </Columns>
+
+                {/* DATA */}
+                <div
+                    className="rgt-data-cells"
+                    // style={{ height: `${totalSize}px` }}
+                >
+                    {totalRows && visibleColumns.length > 1
+                        ? isVirtualScroll
+                            ? [
+                                <Row
+                                    key={"virtual-start"}
+                                    index={"virtual-start"}
+                                    tableManager={tableManager}
+                                />,
+                                ...virtualItems.map((virtualizedRow) => (
+                                    <Row
+                                        key={virtualizedRow.index}
+                                        index={virtualizedRow.index}
+                                        data={pageRows[virtualizedRow.index]}
+                                        measureRef={virtualizedRow.measureRef}
+                                        tableManager={tableManager}
+                                        columnAreas={gridTemplate.areas}
+                                        columnSizes={gridTemplate.sizes}
+                                        // style={{
+                                        //     transform: `translateY(${virtualizedRow.start}px)`
+                                        // }}
+                                    />
+                                )),
+                                <Row
+                                    key={"virtual-end"}
+                                    index={"virtual-end"}
+                                    tableManager={tableManager}
+                                />,
+                            ]
+                            : pageRows.map((rowData, index) => (
+                                <Row
+                                    key={rowData?.[rowIdField]}
+                                    index={index}
+                                    data={rowData}
+                                    tableManager={tableManager}
+                                    columnAreas={gridTemplate.areas}
+                                    columnSizes={gridTemplate.sizes}
+                                />
+                            ))
                     : null}
+                </div>
             </SortableList>
             {!totalRows || !visibleColumns.length ? (
                 <div className="rgt-container-overlay">
