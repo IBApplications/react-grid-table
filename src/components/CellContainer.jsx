@@ -97,9 +97,9 @@ const CellContainer = ({
 
     const onMouseOver = useCallback(
         (event) => {
-            document
-                .querySelectorAll(`#${id} .rgt-row-${rowIndex}`)
-                .forEach((cell) => cell.classList.add("rgt-row-hover"));
+            // document
+            //     .querySelectorAll(`#${id} .rgt-row-${rowIndex}`)
+            //     .forEach((cell) => cell.classList.add("rgt-row-hover"));
             additionalProps.onMouseOver?.(event);
         },
         [id, rowIndex, additionalProps]
@@ -107,9 +107,9 @@ const CellContainer = ({
 
     const onMouseOut = useCallback(
         (event) => {
-            document
-                .querySelectorAll(`#${id} .rgt-row-${rowIndex}`)
-                .forEach((cell) => cell.classList.remove("rgt-row-hover"));
+            // document
+            //     .querySelectorAll(`#${id} .rgt-row-${rowIndex}`)
+            //     .forEach((cell) => cell.classList.remove("rgt-row-hover"));
             additionalProps.onMouseOut?.(event);
         },
         [id, rowIndex, additionalProps]
