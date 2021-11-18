@@ -17,12 +17,11 @@ const MyAwesomeTable = () => {
     let [page, setPage] = useState(1);
     let [pageSize, setPageSize] = useState(20);
     let [pageSizes, setPageSizes] = useState([20, 50, 100]);
-    let [enableColumnsReorder, setEnableColumnsReorder] = useState(true);
-    let [highlightSearch, setHighlightSearch] = useState(true);
-    let [showSearch, setShowSearch] = useState(true);
-    let [showRowsInformation, setShowRowsInformation] = useState(true);
-    let [showColumnVisibilityManager, setShowColumnVisibilityManager] =
-        useState(true);
+    let [enableColumnsReorder, setEnableColumnsReorder] = useState(false);
+    let [highlightSearch, setHighlightSearch] = useState(false);
+    let [showSearch, setShowSearch] = useState(false);
+    let [showRowsInformation, setShowRowsInformation] = useState(false);
+    let [showColumnVisibilityManager, setShowColumnVisibilityManager] = useState(false);
     let [isHeaderSticky, setIsHeaderSticky] = useState(true);
     let [isVirtualScroll, setIsVirtualScroll] = useState(true);
     let [isPaginated, setIsPaginated] = useState(true);
@@ -60,6 +59,7 @@ const MyAwesomeTable = () => {
     useEffect(() => {
         setLoading(true);
         setTimeout(() => {
+            // setRowsData([...MOCK_DATA.slice(0, 50)]);
             setRowsData(MOCK_DATA);
             setLoading(false);
         }, 1500);
@@ -74,6 +74,15 @@ const MyAwesomeTable = () => {
             />
             <div className="tableWrapper">
                 <GridTable
+                    // additionalProps={{
+                    //     rowVirtualizer: {
+                    //         estimateSize: React.useCallback(() => 48, [])
+                    //     }
+                    // }}
+
+                    components={{
+                        Footer: () => null
+                    }}
                     columns={columns}
                     onColumnsChange={setColumns}
                     rows={rowsData}
