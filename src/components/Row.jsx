@@ -1,9 +1,13 @@
 import React from "react";
-import { CellContainer } from "./";
+import { Columns, CellContainer } from "./";
 
-const Row = ({ index, data, tableManager, measureRef }) => {
+const Row = ({ index, data, tableManager, measureRef, columnAreas, columnSizes, style }) => {
     const {
-        config: { isVirtualScroll, rowIdField },
+        config: {
+            isVirtualScroll,
+            rowIdField,
+            additionalProps: { row: additionalProps = {} }
+        },
         rowEditApi: { editRow, getIsRowEditable },
         rowSelectionApi: { getIsRowSelectable, selectedRowsIds },
         columnsApi: { visibleColumns },
@@ -11,26 +15,47 @@ const Row = ({ index, data, tableManager, measureRef }) => {
         rowVirtualizer: { virtualItems, totalSize },
     } = tableManager;
 
+    // console.log('[row] additional props: ', additionalProps, virtualItems, totalSize);
+
+    // if (isVirtualScroll) {
+    //     if (index === "virtual-start") {
+    //         return visibleColumns.map((visibleColumn) => (
+    //             <div
+    //                 key={`${index}-${visibleColumn.id}`}
+    //                 data-virtual="start"
+    //                 style={{ minHeight: virtualItems[0]?.start }}
+    //             />
+    //         ));
+    //     }
+    //     if (index === "virtual-end") {
+    //         return visibleColumns.map((visibleColumn) => (
+    //             <div
+    //                 key={`${index}-${visibleColumn.id}`}
+    //                 data-virtual="end"
+    //                 style={{ minHeight: totalSize - virtualItems[virtualItems.length - 1]?.end || 0 }}
+    //             />
+    //         ));
+    //     }
+    // }
+
     if (isVirtualScroll) {
         if (index === "virtual-start") {
-            return visibleColumns.map((visibleColumn) => (
+            return (
                 <div
-                    key={`${index}-${visibleColumn.id}`}
+                    key={index}
+                    className="rgt-row"
                     style={{ minHeight: virtualItems[0]?.start }}
                 />
-            ));
+            );
         }
         if (index === "virtual-end") {
-            return visibleColumns.map((visibleColumn) => (
+            return (
                 <div
-                    key={`${index}-${visibleColumn.id}`}
-                    style={{
-                        minHeight:
-                            totalSize -
-                                virtualItems[virtualItems.length - 1]?.end || 0,
-                    }}
+                    key={index}
+                    className="rgt-row"
+                    style={{ minHeight: totalSize - virtualItems[virtualItems.length - 1]?.end || 0 }}
                 />
-            ));
+            );
         }
     }
 
@@ -43,21 +68,32 @@ const Row = ({ index, data, tableManager, measureRef }) => {
     let isEdit =
         !!data && editRow?.[rowIdField] === rowId && !!getIsRowEditable(data);
 
-    return visibleColumns.map((visibleColumn, colIndex) => (
-        <CellContainer
-            key={`${visibleColumn.id}-${rowId}`}
-            rowId={rowId}
-            data={rowId && editRow?.[rowIdField] === rowId ? editRow : data}
-            rowIndex={rowIndex}
-            colIndex={colIndex}
-            column={visibleColumn}
-            isSelected={isSelected}
-            isEdit={isEdit}
-            disableSelection={disableSelection}
-            forwardRef={colIndex === 0 ? measureRef : undefined}
-            tableManager={tableManager}
-        />
-    ));
+    return (
+        <Columns
+            className="rgt-row"
+            // className={!isVirtualScrol ? "rgt-row" : "rgt-row rgt-row--virtual"}
+            areas={columnAreas}
+            sizes={columnSizes}
+            data-row-id={`${rowId}`}
+            // style={style}
+        >
+            {visibleColumns.map((visibleColumn, colIndex) => (
+                <CellContainer
+                    key={`${visibleColumn.id}-${rowId}`}
+                    rowId={rowId}
+                    data={rowId && editRow?.[rowIdField] === rowId ? editRow : data}
+                    rowIndex={rowIndex}
+                    colIndex={colIndex}
+                    column={visibleColumn}
+                    isSelected={isSelected}
+                    isEdit={isEdit}
+                    disableSelection={disableSelection}
+                    forwardRef={colIndex === 0 ? measureRef : undefined}
+                    tableManager={tableManager}
+                />
+            ))}
+        </Columns>
+    );
 };
 
 export default Row;
