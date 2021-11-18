@@ -1,3 +1,4 @@
+import Columns from './Columns';
 import CellContainer from "./CellContainer";
 import HeaderCellContainer from "./HeaderCellContainer";
 import Cell from "./Cell";
@@ -19,6 +20,7 @@ import PageSize from "./PageSize";
 import Pagination from "./Pagination";
 
 export {
+    Columns,
     CellContainer,
     HeaderCellContainer,
     Cell,
