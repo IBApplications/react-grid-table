@@ -23,6 +23,7 @@ export const GridTable = (props) => {
             isVirtualScroll,
             rowIdField,
             components: { Header, Footer, Loader, NoResults, DragHandle },
+            showSearch, showColumnVisibilityManager
         },
         refs: { rgtRef, tableRef },
         columnsApi: { visibleColumns },
@@ -39,10 +40,11 @@ export const GridTable = (props) => {
     }, {});
 
     const classNames = ("rgt-wrapper " + (props.className || "")).trim();
+    const showHeader = (showSearch || showColumnVisibilityManager);
 
     return (
         <div {...rest} ref={rgtRef} id={id} className={classNames}>
-            <Header tableManager={tableManager} />
+            {showHeader && <Header tableManager={tableManager} />}
             <SortableList
                 forwardRef={tableRef}
                 getContainer={() => tableRef}
