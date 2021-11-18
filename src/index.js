@@ -13,7 +13,7 @@ const SortableList = SortableContainer(
     )
 );
 
-const GridTable = (props) => {
+export const GridTable = (props) => {
     const tableManager = useTableManager(props);
 
     const {
