@@ -17,33 +17,11 @@ const Row = ({ index, data, tableManager, measureRef, columnAreas, columnSizes, 
 
     // console.log('[row] additional props: ', additionalProps, virtualItems, totalSize);
 
-    // if (isVirtualScroll) {
-    //     if (index === "virtual-start") {
-    //         return visibleColumns.map((visibleColumn) => (
-    //             <div
-    //                 key={`${index}-${visibleColumn.id}`}
-    //                 data-virtual="start"
-    //                 style={{ minHeight: virtualItems[0]?.start }}
-    //             />
-    //         ));
-    //     }
-    //     if (index === "virtual-end") {
-    //         return visibleColumns.map((visibleColumn) => (
-    //             <div
-    //                 key={`${index}-${visibleColumn.id}`}
-    //                 data-virtual="end"
-    //                 style={{ minHeight: totalSize - virtualItems[virtualItems.length - 1]?.end || 0 }}
-    //             />
-    //         ));
-    //     }
-    // }
-
     if (isVirtualScroll) {
         if (index === "virtual-start") {
             return (
                 <div
                     key={index}
-                    className="rgt-row"
                     style={{ minHeight: virtualItems[0]?.start }}
                 />
             );
@@ -52,7 +30,6 @@ const Row = ({ index, data, tableManager, measureRef, columnAreas, columnSizes, 
             return (
                 <div
                     key={index}
-                    className="rgt-row"
                     style={{ minHeight: totalSize - virtualItems[virtualItems.length - 1]?.end || 0 }}
                 />
             );
