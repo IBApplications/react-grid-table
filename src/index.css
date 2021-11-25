@@ -525,6 +525,9 @@
     position: -webkit-sticky;
     position: sticky;
     z-index: 2;
+
+    background: inherit;
+    border-bottom: var(--rgt-border);
 }
 
 .rgt-cell-header-pinned-left {
