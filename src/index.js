@@ -61,8 +61,9 @@ export const GridTable = (props) => {
 
     console.log('[wrapper] render: ', {
         // rowsSizes,
+        // virtualItems,
         visibleColumns,
-        gridTemplate
+        gridTemplate,
     });
 
     return (
@@ -83,6 +84,7 @@ export const GridTable = (props) => {
                 {/* HEADER */}
                 <Columns
                     className="rgt-header-cells"
+                    // @TODO
                     // className="rgt-header-cells rgt-header-cells--sticky"
                     areas={gridTemplate.areas}
                     sizes={gridTemplate.sizes}
@@ -98,10 +100,7 @@ export const GridTable = (props) => {
                 </Columns>
 
                 {/* DATA */}
-                <div
-                    className="rgt-data-cells"
-                    // style={{ height: `${totalSize}px` }}
-                >
+                <div className="rgt-data-cells">
                     {totalRows && visibleColumns.length > 1
                         ? isVirtualScroll
                             ? [
@@ -110,7 +109,7 @@ export const GridTable = (props) => {
                                     index={"virtual-start"}
                                     tableManager={tableManager}
                                 />,
-                                ...virtualItems.map((virtualizedRow) => (
+                                ...virtualItems.map((virtualizedRow, virtualIdx) => (
                                     <Row
                                         key={virtualizedRow.index}
                                         index={virtualizedRow.index}
@@ -119,7 +118,9 @@ export const GridTable = (props) => {
                                         tableManager={tableManager}
                                         columnAreas={gridTemplate.areas}
                                         columnSizes={gridTemplate.sizes}
-                                        style={{ transform: `translateY(${virtualizedRow.start}px)` }}
+                                        style={{
+                                            transform: `translateY(${(virtualizedRow.start + 1 * virtualIdx)}px)`
+                                        }}
                                     />
                                 )),
                                 <Row
