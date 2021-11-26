@@ -119,9 +119,7 @@ export const GridTable = (props) => {
                                         tableManager={tableManager}
                                         columnAreas={gridTemplate.areas}
                                         columnSizes={gridTemplate.sizes}
-                                        // style={{
-                                        //     transform: `translateY(${virtualizedRow.start}px)`
-                                        // }}
+                                        style={{ transform: `translateY(${virtualizedRow.start}px)` }}
                                     />
                                 )),
                                 <Row
