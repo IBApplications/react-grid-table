@@ -54,10 +54,10 @@ const useColumns = (props, tableManager) => {
                 setValue: ({ value, data, setRow, column }) => {
                     setRow({ ...data, [column.field]: value });
                 },
-                searchable: true,
-                editable: true,
-                sortable: true,
-                resizable: true,
+                searchable: false,
+                editable: false,
+                sortable: false,
+                resizable: false,
                 search: ({ value, searchText }) =>
                     value
                         .toString()
