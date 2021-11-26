@@ -183,6 +183,10 @@
     border-right: var(--rgt-border);
 }
 
+.rgt-cell-header:last-of-type .rgt-cell-header-inner-not-pinned-right {
+    border-right: none;
+}
+
 .rgt-cell-header-inner-checkbox {
     padding: 0px;
     justify-content: center;
