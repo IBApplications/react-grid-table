@@ -20,6 +20,7 @@ export const GridTable = (props) => {
         id,
         isLoading,
         config: {
+            isHeaderSticky,
             isVirtualScroll,
             rowIdField,
             components: { Header, Footer, Loader, NoResults, DragHandle },
@@ -83,9 +84,10 @@ export const GridTable = (props) => {
             >
                 {/* HEADER */}
                 <Columns
-                    className="rgt-header-cells"
-                    // @TODO
-                    // className="rgt-header-cells rgt-header-cells--sticky"
+                    className={!isHeaderSticky
+                        ? 'rgt-header-cells'
+                        : 'rgt-header-cells rgt-header-cells--sticky'
+                    }
                     areas={gridTemplate.areas}
                     sizes={gridTemplate.sizes}
                 >

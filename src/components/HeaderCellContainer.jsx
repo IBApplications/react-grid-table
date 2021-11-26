@@ -42,9 +42,7 @@ const HeaderCellContainer = ({ index, column, tableManager }) => {
 
         switch (column.id) {
             case "virtual":
-                classNames = `rgt-cell-header rgt-cell-header-virtual-col${
-                    isHeaderSticky ? " rgt-cell-header-sticky" : ""
-                }`.trim();
+                classNames = 'rgt-cell-header rgt-cell-header-virtual-col';
                 break;
             default:
                 classNames = `rgt-cell-header rgt-cell-header-${
@@ -59,10 +57,6 @@ const HeaderCellContainer = ({ index, column, tableManager }) => {
                     column.sortable !== false && column.id !== "checkbox"
                         ? " rgt-cell-header-sortable"
                         : " rgt-cell-header-not-sortable"
-                }${
-                    isHeaderSticky
-                        ? " rgt-cell-header-sticky"
-                        : " rgt-cell-header-not-sticky"
                 }${
                     column.resizable !== false
                         ? " rgt-cell-header-resizable"
