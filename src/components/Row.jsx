@@ -47,8 +47,7 @@ const Row = ({ index, data, tableManager, measureRef, columnAreas, columnSizes, 
 
     return (
         <Columns
-            className="rgt-row"
-            // className={!isVirtualScrol ? "rgt-row" : "rgt-row rgt-row--virtual"}
+            className={!isVirtualScroll ? 'rgt-row' : 'rgt-row rgt-row--virtual'}
             areas={columnAreas}
             sizes={columnSizes}
             data-row-id={`${rowId}`}
