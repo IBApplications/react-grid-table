@@ -11,6 +11,9 @@
     --rgt-color6: #f7f7f7;
 
     --rgt-border: 1px solid var(--rgt-border-color);
+
+    --rgt-header-row-size: 48px;
+    --rgt-data-row-size: 48px;
 }
 
 /* general */
@@ -73,23 +76,21 @@
     border: var(--rgt-border);
 }
 
+/* LE NEW #CONTAINER bro #hmmm :D */
 .rgt-container {
-    background: var(--rgt-background-color);
-    width: 100%;
     position: relative;
+    flex: 1;
+    width: 100%;
     /* height: 100%; */
-}
-
-/* LE #ROW bro #hmmm :D */
-.rgt-container {
+    
     display: grid;
     grid-template-areas:
         'header'
         'data';
     
-    grid-template-rows: 48px auto;
+    grid-template-rows: var(--rgt-header-row-size) auto;
     
-    flex: 1;
+    background: var(--rgt-background-color);
     overflow: auto;
 }
 
@@ -106,6 +107,9 @@
 }
 
 .rgt-header-cells {
+    min-height: var(--rgt-header-row-size);
+    max-height: var(--rgt-header-row-size);
+
     grid-area: header;
 
     background: var(--rgt-background-color);
@@ -122,6 +126,7 @@
 }
 
 .rgt-row {
+    min-height: var(--rgt-data-row-size);
     background: var(--rgt-background-color);
     border-bottom: var(--rgt-border);
 }
@@ -144,7 +149,6 @@
     display: flex;
     height: 100%;
     align-items: center;
-    min-height: 48px;
 }
 
 .rgt-cell-inner {
@@ -161,8 +165,6 @@
     user-select: none;
     width: 100%;
     z-index: 1;
-    min-height: 48px;
-    max-height: 48px;
 }
 
 .rgt-cell-header-virtual-col {
