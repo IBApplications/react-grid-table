@@ -48,10 +48,10 @@ const Row = ({ index, data, tableManager, measureRef, columnAreas, columnSizes, 
     return (
         <Columns
             className={!isVirtualScroll ? 'rgt-row' : 'rgt-row rgt-row--virtual'}
+            data-row-id={`${rowId}`}
             areas={columnAreas}
             sizes={columnSizes}
-            data-row-id={`${rowId}`}
-            // style={style}
+            style={style}
         >
             {visibleColumns.map((visibleColumn, colIndex) => (
                 <CellContainer
