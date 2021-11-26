@@ -100,17 +100,12 @@
     display: grid;
 }
 
-.rgt-data-cells {
-    position: relative;
-    grid-area: data;
-    grid-auto-rows: max-content;
-}
-
 .rgt-header-cells {
+    position: relative;
+    grid-area: header;
+
     min-height: var(--rgt-header-row-size);
     max-height: var(--rgt-header-row-size);
-
-    grid-area: header;
 
     background: var(--rgt-background-color);
     border-bottom: var(--rgt-border);
@@ -123,6 +118,12 @@
     z-index: 2;
     position: sticky;
     top: 0;
+}
+
+.rgt-data-cells {
+    position: relative;
+    grid-area: data;
+    grid-auto-rows: max-content;
 }
 
 .rgt-row {
