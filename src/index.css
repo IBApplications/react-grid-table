@@ -11,6 +11,7 @@
     --rgt-color6: #f7f7f7;
 
     --rgt-border: 1px solid var(--rgt-border-color);
+    --rgt-header-separator: 1px solid var(--rgt-border-color);
 
     --rgt-header-row-size: 48px;
     --rgt-data-row-size: 48px;
@@ -186,7 +187,7 @@
 }
 
 .rgt-cell-header-inner-not-pinned-right {
-    border-right: var(--rgt-border);
+    border-right: var(--rgt-header-separator);
 }
 
 .rgt-cell-header:last-of-type .rgt-cell-header-inner-not-pinned-right {
