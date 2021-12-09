@@ -49,7 +49,7 @@ declare module '@dimorphic/react-grid-table' {
         selectAllMode?: string;
 
         // events (#TODO: fix unknowns)
-        onColumnsChange?(columns: unknown[]): void;
+        onColumnsChange?(cols: any[], tableManager: unknown): void;
 
         onSelectedRowsChange?(selectedRowsIds: unknown): void
         onSearchTextChange?(searchText: unknown): void;
