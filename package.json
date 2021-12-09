@@ -51,6 +51,7 @@
     ],
     "main": "dist/index.js",
     "source": "src/index.js",
+    "typings": "src/index.d.ts",
     "engines": {
         "node": ">=10"
     },
