@@ -55,14 +55,15 @@ export const GridTable = (props) => {
         };
     }, [visibleColumns]);
 
-    // const rowsSizes = `repeat(${pageRows.length + 1 + (isVirtualScroll ? 1 : 0)}, max-content)`;
-    
     const classNames = ("rgt-wrapper " + (props.className || "")).trim();
     const showHeader = (showSearch || showColumnVisibilityManager);
+    // const rowsSizes = `repeat(${pageRows.length + 1 + (isVirtualScroll ? 1 : 0)}, max-content)`;
 
     console.log('[wrapper] render: ', {
         // rowsSizes,
         // virtualItems,
+        totalRows,
+        rows: (isVirtualScroll ? virtualItems : pageRows),
         visibleColumns,
         gridTemplate,
     });
