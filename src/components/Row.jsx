@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Columns, CellContainer } from "./";
+import callOrReturn from '../utils/call-or-return';
 
 const Row = ({ index, data, tableManager, measureRef, columnAreas, columnSizes, style }) => {
     const {
@@ -15,7 +16,7 @@ const Row = ({ index, data, tableManager, measureRef, columnAreas, columnSizes, 
         rowVirtualizer: { virtualItems, totalSize },
     } = tableManager;
 
-    // console.log('[row] additional props: ', additionalProps, virtualItems, totalSize);
+    // console.log('[row] additional props: ', additionalProps, data);
 
     if (isVirtualScroll) {
         if (index === "virtual-start") {
@@ -45,9 +46,23 @@ const Row = ({ index, data, tableManager, measureRef, columnAreas, columnSizes, 
     let isEdit =
         !!data && editRow?.[rowIdField] === rowId && !!getIsRowEditable(data);
 
+    const classNames = useMemo(() => {
+        const { className } = additionalProps;
+
+        // get custom CSS class for this row or fallback to plain value if any
+        const customRowClass = callOrReturn(className, { rowIndex: index, rowData: data });
+
+        return [
+            'rgt-row',
+            isVirtualScroll && 'rgt-row--virtual',
+            customRowClass
+        ].filter(Boolean).join(' ');
+    }, [additionalProps.className, isVirtualScroll]);
+
     return (
         <Columns
-            className={!isVirtualScroll ? 'rgt-row' : 'rgt-row rgt-row--virtual'}
+            {...additionalProps}
+            className={classNames}
             data-row-id={`${rowId}`}
             areas={columnAreas}
             sizes={columnSizes}
