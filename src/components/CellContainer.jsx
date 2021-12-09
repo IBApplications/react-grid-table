@@ -145,6 +145,7 @@ const CellContainer = ({
             data-row-id={rowId.toString()}
             data-row-index={rowIndex.toString()}
             data-column-id={column.id.toString()}
+            data-column-name={column.field}
             {...additionalProps}
             onMouseOver={onMouseOver}
             onMouseOut={onMouseOut}
