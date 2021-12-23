@@ -1,11 +1,18 @@
 import React, { useMemo } from 'react';
 import { css } from 'goober';
 
-// helper to build dynamic & static/predictible CSS class name(s)
-// NOTE: used instead of inline style to obtain the same 'layout' for rows
-// (without polluting DOM and freeing up 'style' for any overrides)
+//
+// Helper to build dynamic & static/predictible CSS class(names) for 'nested' grids
+//
+// NOTE: used instead of inline style(s) to obtain the same 'grid layout' for rows
+// (without polluting DOM and freeing up 'style' attr for any custom/hard overrides)
+//
+// WHY?: Because 'display: subgrid' is not supported cross-browser. #sad #chewy :(
+// More here: https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Grid_Layout/Subgrid#browser_compatibility
+//
 const getGridClassname = ({ templateAreas, templateColumns }) => css`
     display: grid;
+    grid-auto-flow: column;
 
     /* accept optional template areas & columns */
     ${templateAreas && `grid-template-areas: ${templateAreas};`}
