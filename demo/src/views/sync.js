@@ -59,7 +59,6 @@ const MyAwesomeTable = () => {
     useEffect(() => {
         setLoading(true);
         setTimeout(() => {
-            // setRowsData([...MOCK_DATA.slice(0, 50)]);
             setRowsData(MOCK_DATA);
             setLoading(false);
         }, 1500);
@@ -74,15 +73,6 @@ const MyAwesomeTable = () => {
             />
             <div className="tableWrapper">
                 <GridTable
-                    // additionalProps={{
-                    //     rowVirtualizer: {
-                    //         estimateSize: React.useCallback(() => 48, [])
-                    //     }
-                    // }}
-
-                    components={{
-                        Footer: () => null
-                    }}
                     columns={columns}
                     onColumnsChange={setColumns}
                     rows={rowsData}
