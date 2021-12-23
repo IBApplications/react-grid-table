@@ -93,12 +93,9 @@ const useColumns = (props, tableManager) => {
     ]);
 
     columnsApi.visibleColumns = useMemo(() => {
-        const visibleColumns = columnsApi.columns.filter(
-            (column) => column.visible
-        );
-
-        const virtualColIndex = visibleColumns[visibleColumns.length - 1]
-            ?.pinned
+        const visibleColumns = columnsApi.columns.filter(column => column.visible);
+        const isLastPinned = visibleColumns[visibleColumns.length - 1]?.pinned;
+        const virtualColIndex = isLastPinned
             ? visibleColumns.length - 1
             : visibleColumns.length;
 
