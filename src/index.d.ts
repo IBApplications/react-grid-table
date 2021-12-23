@@ -26,6 +26,9 @@ declare module '@dimorphic/react-grid-table' {
         isLoading?: boolean;
         isHeaderSticky?: boolean;
         isVirtualScroll?: boolean;
+
+        layout?: string;
+        layoutAutoFill?: boolean;
         
         batchSize?: number;
         pageSizes?: number[];
