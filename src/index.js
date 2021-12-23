@@ -40,33 +40,58 @@ export const GridTable = (props) => {
         return rest;
     }, {});
 
-    const gridTemplate = useMemo(() => {
+    const gridTemplate = useMemo(() => {        
         // get column names & sizes
         const names = visibleColumns.map((column, idx) => column.field ?? (column.id || `col-${idx}`));
         const sizes = visibleColumns.map(column => column.width);
+        let layout = props.layout;
+        
+        // check for custom grid columns layout to use...
+        if (layout) {
+            const customLayout = layout
+                .replaceAll(', ', ',') // support sizes in minmax(x, y) units
+                .split(' ');
+   
+            // ...ALL columns sizes present in layout?
+            if (customLayout.length !== sizes.length) {
+                // ...check & bypass syntax for responsive layouts?
+                if (!(layout.startsWith('repeat(') && customLayout.length === 1)) {
+                    // ...broken layout, find missing columns & fill sizes...
+                    const missingColumns = names.slice(customLayout.length);
+                    const fixableLayout = [...customLayout, ...sizes.slice(customLayout.length)];
     
+                    // ...auto fill / fix missing columns?
+                    if (props.layoutAutoFill) {
+                        layout = fixableLayout.join(' ');
+                    } else {
+                        console.warn(`[RGT] Missing layout column sizes (${customLayout.length}/${fixableLayout.length}):`, missingColumns);
+                        console.warn(`[RGT] Fix layout or enable auto-fix (layoutAutoFill: ${props.layoutAutoFill})`)
+                    }
+                }
+            }
+        }
+
         // convert to 'grid-template-*' style
         const gridAreas = `'${names.join(' ')}'`;
-        const gridSizes = sizes.join(' ');
+        const gridSizes = layout ?? sizes.join(' ');
 
         return {
             areas: gridAreas,
             sizes: gridSizes
         };
-    }, [visibleColumns]);
+    }, [visibleColumns, props.layout, props.layoutAutoFill]);
 
     const classNames = ("rgt-wrapper " + (props.className || "")).trim();
     const showHeader = (showSearch || showColumnVisibilityManager);
     // const rowsSizes = `repeat(${pageRows.length + 1 + (isVirtualScroll ? 1 : 0)}, max-content)`;
 
     console.log('[wrapper] render: ', {
-        // rowsSizes,
-        // virtualItems,
         totalRows,
         rows: (isVirtualScroll ? virtualItems : pageRows),
         visibleColumns,
         gridTemplate,
     });
+    console.log(' ');
 
     return (
         <div {...rest} ref={rgtRef} id={id} className={classNames}>
@@ -169,6 +194,7 @@ GridTable.defaultProps = {
     minSearchChars: 2,
     isPaginated: true,
     isVirtualScroll: true,
+    layoutAutoFill: false,
     showSearch: true,
     showRowsInformation: true,
     showColumnVisibilityManager: true,
@@ -188,7 +214,10 @@ GridTable.propTypes = {
     getIsRowSelectable: PropTypes.func,
     getIsRowEditable: PropTypes.func,
     editRowId: PropTypes.any,
+
     // table config
+    layout: PropTypes.string,
+    layoutAutoFill: PropTypes.bool,
     rowIdField: PropTypes.string,
     batchSize: PropTypes.number,
     isPaginated: PropTypes.bool,
@@ -213,6 +242,7 @@ GridTable.propTypes = {
     totalRows: PropTypes.number,
     requestDebounceTimeout: PropTypes.number,
     selectAllMode: PropTypes.string,
+
     // events
     onColumnsChange: PropTypes.func,
     onSearchTextChange: PropTypes.func,
