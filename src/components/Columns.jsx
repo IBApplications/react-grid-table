@@ -12,7 +12,6 @@ import { css } from 'goober';
 //
 const getGridClassname = ({ templateAreas, templateColumns }) => css`
     display: grid;
-    grid-auto-flow: column;
 
     /* accept optional template areas & columns */
     ${templateAreas && `grid-template-areas: ${templateAreas};`}
