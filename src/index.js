@@ -85,13 +85,13 @@ export const GridTable = (props) => {
     const showHeader = (showSearch || showColumnVisibilityManager);
     // const rowsSizes = `repeat(${pageRows.length + 1 + (isVirtualScroll ? 1 : 0)}, max-content)`;
 
-    console.log('[wrapper] render: ', {
-        totalRows,
-        rows: (isVirtualScroll ? virtualItems : pageRows),
-        visibleColumns,
-        gridTemplate,
-    });
-    console.log(' ');
+    // console.log('[wrapper] render: ', {
+    //     totalRows,
+    //     rows: (isVirtualScroll ? virtualItems : pageRows),
+    //     visibleColumns,
+    //     gridTemplate,
+    // });
+    // console.log(' ');
 
     return (
         <div {...rest} ref={rgtRef} id={id} className={classNames}>
