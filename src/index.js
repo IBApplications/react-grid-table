@@ -147,7 +147,7 @@ export const GridTable = (props) => {
                                         columnAreas={gridTemplate.areas}
                                         columnSizes={gridTemplate.sizes}
                                         style={{
-                                            transform: `translateY(${(virtualizedRow.start + 1 * virtualIdx)}px)`
+                                            transform: `translateY(calc(${(virtualizedRow.start + 1 * virtualIdx)}px + var(--rgt-data-row-gap) * ${virtualIdx}))`
                                         }}
                                     />
                                 )),

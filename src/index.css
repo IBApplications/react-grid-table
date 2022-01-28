@@ -15,6 +15,7 @@
 
     --rgt-header-row-size: 48px;
     --rgt-data-row-size: 48px;
+    --rgt-data-row-gap: 0px;
     --rgt-min-height: 400px;
 }
 
