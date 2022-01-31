@@ -47,6 +47,7 @@ const Row = ({ index, data, tableManager, measureRef, columnAreas, columnSizes, 
         !!data && editRow?.[rowIdField] === rowId && !!getIsRowEditable(data);
 
     const classNames = useMemo(() => {
+        console.log('[row.classnames] get classses...');
         const { className } = additionalProps;
 
         // get custom CSS class for this row or fallback to plain value if any
