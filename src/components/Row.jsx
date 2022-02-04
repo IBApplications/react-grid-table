@@ -47,7 +47,6 @@ const Row = ({ index, data, tableManager, measureRef, columnAreas, columnSizes, 
         !!data && editRow?.[rowIdField] === rowId && !!getIsRowEditable(data);
 
     const classNames = useMemo(() => {
-        console.log('[row.classnames] get classses...', data);
         const { className } = additionalProps;
 
         // get custom CSS class for this row or fallback to plain value if any
@@ -58,7 +57,7 @@ const Row = ({ index, data, tableManager, measureRef, columnAreas, columnSizes, 
             isVirtualScroll && 'rgt-row--virtual',
             customRowClass
         ].filter(Boolean).join(' ');
-    }, [additionalProps.className, isVirtualScroll]);
+    }, [additionalProps.className, isVirtualScroll, data]);
 
     return (
         <Columns
