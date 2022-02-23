@@ -76,7 +76,8 @@ const CellContainer = ({
                 value: isEdit
                     ? editRow[column.field]
                     : data[column.field],
-                column
+                column,
+                data
             });
 
             if (typeof value === 'string') {
