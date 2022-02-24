@@ -99,11 +99,14 @@ const useColumns = (props, tableManager) => {
             ? visibleColumns.length - 1
             : visibleColumns.length;
 
+        // @TODO: do we always need this virtual column?
+        // if (isLastPinned) {
         visibleColumns.splice(virtualColIndex, 0, {
             id: "virtual",
             visible: true,
             width: "auto",
         });
+        // }
 
         return visibleColumns;
     }, [columnsApi.columns]);
