@@ -32,11 +32,19 @@ const useSort = (props, tableManager) => {
 
     sortApi.sortRows = useCallback(
         (rows) => {
+            // using external sort(er) ?
+            if (typeof props.onSortChange === 'function') {
+                // ...fallback to current rows, already sorted
+                return rows;
+            }
+
+            // use internal sort(er)...
             var cols = columns.reduce((conf, coldef) => {
                 conf[coldef.id] = coldef;
                 return conf;
             }, {});
 
+            // ...just sort it?
             if (sortApi.sort?.colId) {
                 rows = [...rows];
                 rows.sort((a, b) => {
