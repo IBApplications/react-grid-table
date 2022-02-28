@@ -57,7 +57,7 @@ const Row = ({ index, data, tableManager, measureRef, columnAreas, columnSizes, 
             isVirtualScroll && 'rgt-row--virtual',
             customRowClass
         ].filter(Boolean).join(' ');
-    }, [additionalProps.className, isVirtualScroll]);
+    }, [additionalProps.className, isVirtualScroll, data]);
 
     return (
         <Columns
