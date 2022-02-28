@@ -68,28 +68,22 @@ const CellContainer = ({
     const getValue = () => {
         let value;
 
-        switch (column.id) {
-            case "checkbox":
-                value = isSelected;
-                break;
-            default:
-                value =
-                    data &&
-                    column
-                        .getValue?.({
-                            tableManager,
-                            value: isEdit
-                                ? editRow[column.field]
-                                : data[column.field],
-                            column,
-                        })
-                        ?.toString?.();
-                if (
-                    !isEdit &&
-                    highlightSearch &&
-                    valuePassesSearch(value, column)
-                )
+        if (column.id === 'checkbox') {
+            value = isSelected;
+        } else {
+            value = data && column.getValue?.({
+                tableManager,
+                value: isEdit
+                    ? editRow[column.field]
+                    : data[column.field],
+                column
+            });
+
+            if (typeof value === 'string') {
+                if (!isEdit && highlightSearch && valuePassesSearch(value, column)) {
                     return getHighlightedText(value, searchText);
+                }
+            }
         }
 
         return value;
