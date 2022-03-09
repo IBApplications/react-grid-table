@@ -20,7 +20,7 @@ const getGridClassname = ({ templateAreas, templateColumns }) => css`
 
 // WARN: DO NOT transform to a 'styled' component, use as React:FC helper
 // (this way you can use any implementation of styled-components / emotion / etc.)
-const Columns = ({ className, children, areas, sizes, style }) => {
+const Columns = ({ className, children, areas, sizes, style, ...rest }) => {
     const classNames = useMemo(() => {
         // create CSS template layout based on columns names & sizes
         const gridTemplateClassname = getGridClassname({
@@ -32,7 +32,7 @@ const Columns = ({ className, children, areas, sizes, style }) => {
     }, [className, areas, sizes]);
     
     return (
-        <div className={classNames} style={style}>{children}</div>
+        <div className={classNames} style={style} {...rest}>{children}</div>
     );
 };
 
