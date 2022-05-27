@@ -18,6 +18,8 @@ import {
 } from "../hooks/";
 
 const useTableManager = (props) => {
+    // console.log('[rgt.use.table] PROPS: ', props);
+
     const tableManagerRef = useRef({
         id: props.id || uuid(),
         isMounted: false,
@@ -88,6 +90,7 @@ const useTableManager = (props) => {
     tableManager.isLoading =
         props.isLoading ??
         (tableManager.mode !== "sync" && tableManager.asyncApi.isLoading);
+
     const searchText =
         tableManager.searchApi.searchText.length >=
         tableManager.config.minSearchChars

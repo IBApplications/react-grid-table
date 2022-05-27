@@ -1,12 +1,16 @@
 import { useState, useCallback, useRef } from "react";
 
 const useSort = (props, tableManager) => {
+    console.log('[rgt.use.sort] props: ', props);
+
     const {
         columnsApi: { columns },
     } = tableManager;
 
     const sortApi = useRef({}).current;
     const [sort, setSort] = useState({ colId: null, isAsc: true });
+
+    sortApi.isSorting = props.isSorting ?? false;
 
     sortApi.sort = props.sort ?? sort;
     if (
@@ -16,24 +20,40 @@ const useSort = (props, tableManager) => {
     )
         sortApi.sort = { colId: null, isAsc: true };
 
-    sortApi.setSort = ({ colId, isAsc }) => {
+    sortApi.setSort = useCallback(({ colId, isAsc }) => {
+        console.log('[rgt.set.sort] set SORT :', { colId, isAsc });
+
         const {
             columnsReorderApi: { isColumnReordering },
             columnsResizeApi: { isColumnResizing },
+            sortApi: { isSorting }
         } = tableManager;
 
         if (isColumnReordering) return;
         if (isColumnResizing) return;
+        if (isSorting) return;
+
+        console.log('[rgt.set.sort] HERE isSorting ?... ', { isSorting });
 
         if (props.sort === undefined || props.onSortChange === undefined)
             setSort({ colId, isAsc });
         props.onSortChange?.({ colId, isAsc }, tableManager);
-    };
+    }, [
+        props.sort,
+        props.onSortChange,
+        sortApi.isSorting,
+        tableManager.columnsReorderApi.isColumnReordering,
+        tableManager.columnsResizeApi.isColumnResizing
+    ]);
 
     sortApi.sortRows = useCallback(
         (rows) => {
             // using external sort(er) ?
-            if (typeof props.onSortChange === 'function') {
+            // #TODO: change to prop flag, bug on internal sorter?
+            if (
+                typeof props.onSortChange === 'function' &&
+                props.enableExternalSort
+            ) {
                 // ...fallback to current rows, already sorted
                 return rows;
             }
@@ -68,7 +88,7 @@ const useSort = (props, tableManager) => {
 
             return rows;
         },
-        [sortApi.sort, columns]
+        [sortApi.sort, columns, props.enableExternalSort]
     );
 
     sortApi.toggleSort = (colId) => {
