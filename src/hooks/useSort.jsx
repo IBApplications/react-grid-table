@@ -1,7 +1,7 @@
 import { useState, useCallback, useRef } from "react";
 
 const useSort = (props, tableManager) => {
-    console.log('[rgt.use.sort] props: ', props);
+    // console.log('[rgt.use.sort] props: ', props);
 
     const {
         columnsApi: { columns },
@@ -21,8 +21,6 @@ const useSort = (props, tableManager) => {
         sortApi.sort = { colId: null, isAsc: true };
 
     sortApi.setSort = useCallback(({ colId, isAsc }) => {
-        console.log('[rgt.set.sort] set SORT :', { colId, isAsc });
-
         const {
             columnsReorderApi: { isColumnReordering },
             columnsResizeApi: { isColumnResizing },
@@ -32,8 +30,6 @@ const useSort = (props, tableManager) => {
         if (isColumnReordering) return;
         if (isColumnResizing) return;
         if (isSorting) return;
-
-        console.log('[rgt.set.sort] HERE isSorting ?... ', { isSorting });
 
         if (props.sort === undefined || props.onSortChange === undefined)
             setSort({ colId, isAsc });
