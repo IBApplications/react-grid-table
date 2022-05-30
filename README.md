@@ -188,6 +188,7 @@ export default MyAwesomeTable;
 | isHeaderSticky | boolean | whether the table header cells will stick to the top when scrolling, or not | true |
 | isPaginated | boolean | determine whether the pagination controls sholuld be shown in the footer and if the rows data should split into pages | true |
 | enableColumnsReorder | boolean | whether to allow column drag & drop for repositioning | true |
+| enableExternalSort | boolean | whether to sort internally or rely on external onSortChange updates | false |
 | highlightSearch | boolean | whether to highlight the search term | true |
 | showSearch | boolean | whether to show the search component in the header | true |
 | showRowsInformation | boolean | whether to show the rows information component (located at the left side of the footer) | true |
