@@ -268,7 +268,7 @@ GridTable.propTypes = {
     onTotalRowsChange: PropTypes.func,
 };
 
-export const version = '1.1.2';
+export const version = '1.1.3';
 export default GridTable;
 
 export * from "./components";
