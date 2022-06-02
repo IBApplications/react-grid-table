@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { SortableElement, SortableHandle } from "../drag-and-drop";
+import callOrReturn from '../utils/call-or-return';
 
 const SortableItem = ({ children, columnId, className }, ref) => (
     <div ref={ref} className={className} data-column-id={columnId}>
@@ -20,7 +21,7 @@ const SortableDragHandle = SortableHandle(
 const HeaderCellContainer = ({ index, column, tableManager }) => {
     let {
         config: {
-            isHeaderSticky,
+            enableColumnsReorder,
             components: { DragHandle },
             additionalProps: { headerCellContainer: additionalProps = {} },
             icons: {
@@ -28,26 +29,27 @@ const HeaderCellContainer = ({ index, column, tableManager }) => {
                 sortDescending: sortDescendingIcon,
             },
         },
-        sortApi: { sort, toggleSort },
+        sortApi: { isSorting, sort, toggleSort },
         columnsApi: { visibleColumns },
-        config: { enableColumnsReorder },
         columnsResizeApi: { useResizeRef },
         rowSelectionApi: { selectAll: selectionProps },
     } = tableManager;
 
     let resizeHandleRef = useResizeRef(column);
 
-    const getClassNames = () => {
-        let classNames;
+    const classNames = useMemo(() => {
+        const { className } = additionalProps;
+        let headerClassNames;
 
         switch (column.id) {
             case "virtual":
-                classNames = 'rgt-cell-header rgt-cell-header-virtual-col';
+                headerClassNames = 'rgt-cell-header-virtual-col';
                 break;
             default:
-                classNames = `rgt-cell-header rgt-cell-header-${
+                headerClassNames = `rgt-cell-header-${
                     column.id === "checkbox" ? "checkbox" : column.field
                 }${
+                    !isSorting &&
                     column.sortable !== false &&
                     column.id !== "checkbox" &&
                     column.id !== "virtual"
@@ -76,12 +78,18 @@ const HeaderCellContainer = ({ index, column, tableManager }) => {
                 } ${column.className}`.trim();
         }
 
-        return (
-            classNames.trim() +
-            " " +
-            (additionalProps.className || "")
-        ).trim();
-    };
+        // get custom CSS class for this header cell or fallback to plain value if any
+        const customHeaderClass = callOrReturn(className, { colIndex: index, colData: column });
+
+        const cellClassnames = [
+            'rgt-cell-header',
+            headerClassNames.trim(),
+            isSorting && 'rgt-cell-header-sorting',
+            customHeaderClass
+        ].filter(Boolean).join(' ');
+
+        return cellClassnames;
+    }, [additionalProps.className, isSorting, column]);
 
     const getAdditionalProps = () => {
         let mergedProps = {
@@ -100,7 +108,6 @@ const HeaderCellContainer = ({ index, column, tableManager }) => {
 
     let isPinnedRight = column.pinned && index === visibleColumns.length - 1;
     let isPinnedLeft = column.pinned && index === 0;
-    let classNames = getClassNames();
     let innerCellClassNames = `rgt-cell-header-inner${
         column.id === "checkbox" ? " rgt-cell-header-inner-checkbox" : ""
     }${!isPinnedRight ? " rgt-cell-header-inner-not-pinned-right" : ""}`;
