@@ -40,18 +40,18 @@ export const GridTable = (props) => {
         return rest;
     }, {});
 
-    const gridTemplate = useMemo(() => {        
+    const gridTemplate = useMemo(() => {
         // get column names & sizes
         const names = visibleColumns.map((column, idx) => column.field ?? (column.id || `col-${idx}`));
         const sizes = visibleColumns.map(column => column.width);
         let layout = props.layout;
-        
+
         // check for custom grid columns layout to use...
         if (layout) {
             const customLayout = layout
                 .replaceAll(', ', ',') // support sizes in minmax(x, y) units
                 .split(' ');
-   
+
             // ...ALL columns sizes present in layout?
             if (customLayout.length !== sizes.length) {
                 // ...check & bypass syntax for responsive layouts?
@@ -59,7 +59,7 @@ export const GridTable = (props) => {
                     // ...broken layout, find missing columns & fill sizes...
                     const missingColumns = names.slice(customLayout.length);
                     const fixableLayout = [...customLayout, ...sizes.slice(customLayout.length)];
-    
+
                     // ...auto fill / fix missing columns?
                     if (props.layoutAutoFill) {
                         layout = fixableLayout.join(' ');
@@ -201,6 +201,7 @@ GridTable.defaultProps = {
     showColumnVisibilityManager: true,
     enableColumnsReorder: true,
     enableExternalSort: false,
+    alwaysSortMode: false,
     requestDebounceTimeout: 300,
     getIsRowSelectable: () => true,
     getIsRowEditable: () => true,
@@ -225,10 +226,12 @@ GridTable.propTypes = {
     isPaginated: PropTypes.bool,
     enableColumnsReorder: PropTypes.bool,
     enableExternalSort: PropTypes.bool,
+    alwaysSortMode: PropTypes.bool,
     pageSizes: PropTypes.arrayOf(PropTypes.number),
     pageSize: PropTypes.number,
     page: PropTypes.number,
     sort: PropTypes.object,
+    defaultSort: PropTypes.object,
     minColumnResizeWidth: PropTypes.number,
     highlightSearch: PropTypes.bool,
     showSearch: PropTypes.bool,

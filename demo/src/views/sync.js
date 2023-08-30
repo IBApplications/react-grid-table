@@ -95,8 +95,8 @@ const MyAwesomeTable = () => {
                     onLoad={setTableManager}
                     searchText={searchText}
                     onSearchTextChange={setSearchText}
-                    sort={sort}
-                    onSortChange={setSort}
+                    // sort={sort}
+                    // onSortChange={setSort}
                     page={page}
                     onPageChange={setPage}
                     pageSize={pageSize}
@@ -113,6 +113,9 @@ const MyAwesomeTable = () => {
                     minSearchChars={minSearchChars}
                     minColumnResizeWidth={minColumnResizeWidth}
                     selectAllMode={selectAllMode}
+                    enableExternalSort
+                    defaultSort={{ colId: columns[1].id, isAsc: true }}
+                    alwaysSortMode
                 />
             </div>
         </div>

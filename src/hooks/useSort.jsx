@@ -8,7 +8,7 @@ const useSort = (props, tableManager) => {
     } = tableManager;
 
     const sortApi = useRef({}).current;
-    const [sort, setSort] = useState({ colId: null, isAsc: true });
+    const [sort, setSort] = useState(props.defaultSort || { colId: null, isAsc: true });
 
     sortApi.isSorting = props.isSorting ?? false;
 
@@ -92,7 +92,9 @@ const useSort = (props, tableManager) => {
         if (sortApi.sort.colId === colId) {
             if (sortApi.sort.isAsc) isAsc = false;
             else {
-                colId = null;
+                if (!props.alwaysSortMode) {
+                    colId = null;
+                }
                 isAsc = true;
             }
         }

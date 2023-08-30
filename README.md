@@ -176,6 +176,7 @@ export default MyAwesomeTable;
 | page | number | current page number | 1 |
 | pageSize | number | the selected page size | 20 |
 | sort | object | sort config. accepts `colId` for the id of the column that should be sorted, and `isAsc` to define the sort direction. example: `{ colId: 'some-column-id', isAsc: true }`, to unsort simply pass `colId` as `null` | { } |
+| defaultSort | object | default sort config. accepts `colId` for the id of the column that should be sorted, and `isAsc` to define the sort direction. example: `{ colId: 'some-column-id', isAsc: true }` | { } |
 | isLoading | boolean | whether to display the loader | false |
 
 ### Configuration props
@@ -189,6 +190,7 @@ export default MyAwesomeTable;
 | isPaginated | boolean | determine whether the pagination controls sholuld be shown in the footer and if the rows data should split into pages | true |
 | enableColumnsReorder | boolean | whether to allow column drag & drop for repositioning | true |
 | enableExternalSort | boolean | whether to sort internally or rely on external onSortChange updates | false |
+| alwaysSortMode | boolean | whether to sort always | false |
 | highlightSearch | boolean | whether to highlight the search term | true |
 | showSearch | boolean | whether to show the search component in the header | true |
 | showRowsInformation | boolean | whether to show the rows information component (located at the left side of the footer) | true |
