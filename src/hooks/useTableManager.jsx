@@ -20,12 +20,11 @@ import {
 const useTableManager = (props) => {
     // console.log('[rgt.use.table] PROPS: ', props);
 
-    const tableManagerRef = useRef({
+    const tableManager = useRef({
         id: props.id || uuid(),
         isMounted: false,
         isInitialized: false,
-    });
-    const tableManager = tableManagerRef.current;
+    }).current;
 
     Object.defineProperty(tableManager, "columnsReorderApi", {
         enumerable: false,
@@ -90,54 +89,6 @@ const useTableManager = (props) => {
     tableManager.isLoading =
         props.isLoading ??
         (tableManager.mode !== "sync" && tableManager.asyncApi.isLoading);
-
-    const searchText =
-        tableManager.searchApi.searchText.length >=
-        tableManager.config.minSearchChars
-            ? tableManager.searchApi.searchText
-            : "";
-
-    // reset page number
-    useEffect(() => {
-        if (!tableManager.isInitialized) return;
-        if (tableManager.paginationApi.page === 1) return;
-
-        tableManager.paginationApi.setPage(1);
-    }, [
-        searchText,
-        tableManager.isInitialized,
-        tableManager.paginationApi,
-        tableManager.paginationApi.pageSize,
-    ]);
-
-    // reset rows
-    useEffect(() => {
-        if (!tableManagerRef.current.isInitialized) return;
-
-        if (tableManager.mode !== "sync") {
-            tableManager.rowSelectionApi.setSelectedRowsIds([]);
-            tableManager.asyncApi.resetRows();
-        }
-    }, [
-        searchText,
-        tableManager.asyncApi,
-        tableManager.mode,
-        tableManager.rowSelectionApi,
-        tableManager.sortApi.sort.colId,
-        tableManager.sortApi.sort.isAsc,
-    ]);
-
-    // reset edit row
-    useEffect(() => {
-        if (tableManager.rowEditApi.editRow)
-            tableManager.rowEditApi.setEditRowId(null);
-    }, [
-        searchText,
-        tableManager.sortApi.sort.colId,
-        tableManager.sortApi.sort.isAsc,
-        tableManager.paginationApi.page,
-        tableManager.rowEditApi,
-    ]);
 
     // initialization completion
     useEffect(() => {

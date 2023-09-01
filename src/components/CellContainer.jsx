@@ -65,26 +65,35 @@ const CellContainer = ({
         return classNames;
     };
 
+    const textValue = useMemo(
+        () =>
+            data &&
+            column
+                .getValue?.({
+                    tableManager,
+                    value: isEdit ? editRow[column.field] : data[column.field],
+                    column,
+                    rowData: data,
+                })
+                ?.toString?.(),
+        [column, data, editRow, isEdit, tableManager]
+    );
+
     const getValue = () => {
         let value;
 
-        if (column.id === 'checkbox') {
-            value = isSelected;
-        } else {
-            value = data && column.getValue?.({
-                tableManager,
-                value: isEdit
-                    ? editRow[column.field]
-                    : data[column.field],
-                column,
-                data
-            });
-
-            if (typeof value === 'string') {
-                if (!isEdit && highlightSearch && valuePassesSearch(value, column)) {
+        switch (column.id) {
+            case "checkbox":
+                value = isSelected;
+                break;
+            default:
+                value = textValue;
+                if (
+                    !isEdit &&
+                    highlightSearch &&
+                    valuePassesSearch(value, column)
+                )
                     return getHighlightedText(value, searchText);
-                }
-            }
         }
 
         return value;
@@ -92,9 +101,9 @@ const CellContainer = ({
 
     const onMouseOver = useCallback(
         (event) => {
-            // document
-            //     .querySelectorAll(`#${id} .rgt-row-${rowIndex}`)
-            //     .forEach((cell) => cell.classList.add("rgt-row-hover"));
+            document
+                .querySelectorAll(`#${id} .rgt-row-${rowIndex}`)
+                .forEach((cell) => cell.classList.add("rgt-row-hover"));
             additionalProps.onMouseOver?.(event);
         },
         [id, rowIndex, additionalProps]
@@ -102,9 +111,9 @@ const CellContainer = ({
 
     const onMouseOut = useCallback(
         (event) => {
-            // document
-            //     .querySelectorAll(`#${id} .rgt-row-${rowIndex}`)
-            //     .forEach((cell) => cell.classList.remove("rgt-row-hover"));
+            document
+                .querySelectorAll(`#${id} .rgt-row-${rowIndex}`)
+                .forEach((cell) => cell.classList.remove("rgt-row-hover"));
             additionalProps.onMouseOut?.(event);
         },
         [id, rowIndex, additionalProps]
@@ -124,7 +133,15 @@ const CellContainer = ({
     let classNames = getClassNames();
     let value = getValue();
 
-    let cellProps = { tableManager, value, data, column, colIndex, rowIndex };
+    let cellProps = {
+        tableManager,
+        value,
+        textValue,
+        data,
+        column,
+        colIndex,
+        rowIndex,
+    };
     const isFirstEditableCell = useMemo(
         () =>
             visibleColumns.findIndex(
@@ -140,7 +157,6 @@ const CellContainer = ({
             data-row-id={rowId.toString()}
             data-row-index={rowIndex.toString()}
             data-column-id={column.id.toString()}
-            data-column-name={column.field}
             {...additionalProps}
             onMouseOver={onMouseOver}
             onMouseOut={onMouseOut}

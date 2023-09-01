@@ -8,7 +8,9 @@ const useSort = (props, tableManager) => {
     } = tableManager;
 
     const sortApi = useRef({}).current;
-    const [sort, setSort] = useState(props.defaultSort || { colId: null, isAsc: true });
+    const [sort, setSort] = useState(
+        props.defaultSort || { colId: null, isAsc: true }
+    );
 
     sortApi.isSorting = props.isSorting ?? false;
 
@@ -20,34 +22,37 @@ const useSort = (props, tableManager) => {
     )
         sortApi.sort = { colId: null, isAsc: true };
 
-    sortApi.setSort = useCallback(({ colId, isAsc }) => {
-        const {
-            columnsReorderApi: { isColumnReordering },
-            columnsResizeApi: { isColumnResizing },
-            sortApi: { isSorting }
-        } = tableManager;
+    sortApi.setSort = useCallback(
+        ({ colId, isAsc }) => {
+            const {
+                columnsReorderApi: { isColumnReordering },
+                columnsResizeApi: { isColumnResizing },
+                sortApi: { isSorting },
+            } = tableManager;
 
-        if (isColumnReordering) return;
-        if (isColumnResizing) return;
-        if (isSorting) return;
+            if (isColumnReordering) return;
+            if (isColumnResizing) return;
+            if (isSorting) return;
 
-        if (props.sort === undefined || props.onSortChange === undefined)
-            setSort({ colId, isAsc });
-        props.onSortChange?.({ colId, isAsc }, tableManager);
-    }, [
-        props.sort,
-        props.onSortChange,
-        sortApi.isSorting,
-        tableManager.columnsReorderApi.isColumnReordering,
-        tableManager.columnsResizeApi.isColumnResizing
-    ]);
+            if (props.sort === undefined || props.onSortChange === undefined)
+                setSort({ colId, isAsc });
+            props.onSortChange?.({ colId, isAsc }, tableManager);
+        },
+        [
+            props.sort,
+            props.onSortChange,
+            sortApi.isSorting,
+            tableManager.columnsReorderApi.isColumnReordering,
+            tableManager.columnsResizeApi.isColumnResizing,
+        ]
+    );
 
     sortApi.sortRows = useCallback(
         (rows) => {
             // using external sort(er) ?
             // #TODO: change to prop flag, bug on internal sorter?
             if (
-                typeof props.onSortChange === 'function' &&
+                typeof props.onSortChange === "function" &&
                 props.enableExternalSort
             ) {
                 // ...fallback to current rows, already sorted
@@ -65,12 +70,16 @@ const useSort = (props, tableManager) => {
                 rows = [...rows];
                 rows.sort((a, b) => {
                     const aVal = cols[sortApi.sort.colId].getValue({
+                        tableManager,
                         value: a[cols[sortApi.sort.colId].field],
                         column: cols[sortApi.sort.colId],
+                        rowData: a,
                     });
                     const bVal = cols[sortApi.sort.colId].getValue({
+                        tableManager,
                         value: b[cols[sortApi.sort.colId].field],
                         column: cols[sortApi.sort.colId],
+                        rowData: b,
                     });
 
                     if (cols[sortApi.sort.colId].sortable === false) return 0;
@@ -84,7 +93,7 @@ const useSort = (props, tableManager) => {
 
             return rows;
         },
-        [sortApi.sort, columns, props.enableExternalSort]
+        [sortApi.sort, columns, tableManager, props.enableExternalSort]
     );
 
     sortApi.toggleSort = (colId) => {
