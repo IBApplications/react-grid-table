@@ -69,7 +69,7 @@ const CellContainer = ({
         () =>
             data &&
             column
-                .getValue?.({
+                ?.getValue?.({
                     tableManager,
                     value: isEdit ? editRow[column.field] : data[column.field],
                     column,
