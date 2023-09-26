@@ -20,7 +20,7 @@ const CellContainer = ({
             tableHasSelection,
             additionalProps: { cellContainer: additionalProps = {} },
         },
-        rowsApi: { onRowClick },
+        rowsApi: { onRowClick, onRowDblClick },
         rowEditApi: { editRow, setEditRow },
         rowSelectionApi: { toggleRowSelection },
         searchApi: { searchText, valuePassesSearch },
@@ -114,6 +114,17 @@ const CellContainer = ({
         additionalProps = {
             onClick: (event) =>
                 onRowClick(
+                    { rowIndex, data, column, isEdit, event },
+                    tableManager
+                ),
+            ...additionalProps,
+        };
+    }
+
+    if (data && onRowDblClick) {
+        additionalProps = {
+            onDoubleClick: (event) =>
+                onRowDblClick(
                     { rowIndex, data, column, isEdit, event },
                     tableManager
                 ),

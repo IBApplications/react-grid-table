@@ -214,6 +214,7 @@ export default MyAwesomeTable;
 | onSearchTextChange | function | triggers when search text changed | `searchText => { ... }` |
 | onSortChange | function | triggers when sort changed | `({colId, isAsc}) => { ... }` |
 | onRowClick | function | triggers when a row is clicked | `({ rowIndex, data, column, isEdit, event }, tableManager) => { ... }` |
+| onRowDblClick | function | triggers when a row is double clicked | `({ rowIndex, data, column, isEdit, event }, tableManager) => { ... }` |
 | onEditRowIdChange | function | triggers when `rowEditId` changed | `rowEditId => { ... }` |
 | onLoad | function | triggers when `tableManager` is initialized (<u>[details](#tableManager)</u>) | `tableManager => { ... }` |
 | onColumnResizeStart | function | triggers when column resize starts | `({event, target, column}) => { ... }` |

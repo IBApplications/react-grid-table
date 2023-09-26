@@ -28,6 +28,7 @@ const useRows = (props, tableManager) => {
     }, [props.rows, rows, mode, searchRows, sortRows]);
 
     rowsApi.onRowClick = props.onRowClick;
+    rowsApi.onRowDblClick = props.onRowDblClick;
     rowsApi.totalRows =
         mode === "sync" ? rowsApi.rows?.length : props.totalRows ?? totalRows;
 

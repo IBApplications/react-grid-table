@@ -64,6 +64,7 @@ declare module '@dimorphic/react-grid-table' {
         onSortChange?({ colId, isAsc }: { colId: string, isAsc: boolean }, tableManager: unknown): void;
         
         onRowClick?({ rowIndex, data, column, isEdit, event }: any, tableManager: unknown): void;
+        onRowDblClick?({ rowIndex, data, column, isEdit, event }: any, tableManager: unknown): void;
         onEditRowIdChange?(...args: unknown[]): unknown;
 
         onPageChange?(nextPage: unknown): void;
