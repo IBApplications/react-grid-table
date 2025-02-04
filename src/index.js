@@ -93,6 +93,8 @@ export const GridTable = (props) => {
     // });
     // console.log(' ');
 
+    console.log('rest', rest)';'
+
     return (
         <div {...rest} ref={rgtRef} id={id} className={classNames}>
             {showHeader && <Header tableManager={tableManager} />}
