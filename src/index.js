@@ -167,7 +167,7 @@ export const GridTable = (props) => {
                                     columnSizes={gridTemplate.sizes}
                                 />
                             ))
-                    : null}
+                        : null}
                 </div>
             </SortableList>
             {!totalRows || !visibleColumns.length ? (
@@ -256,6 +256,7 @@ GridTable.propTypes = {
     onSelectedRowsChange: PropTypes.func,
     onSortChange: PropTypes.func,
     onRowClick: PropTypes.func,
+    onRowDblClick: PropTypes.func,
     onEditRowIdChange: PropTypes.func,
     onPageChange: PropTypes.func,
     onPageSizeChange: PropTypes.func,

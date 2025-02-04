@@ -16,6 +16,11 @@ const useRows = (props, tableManager) => {
         writable: true,
     });
 
+    Object.defineProperty(rowsApi, "onRowDblClick", {
+        enumerable: false,
+        writable: true,
+    });
+
     rowsApi.rows = useMemo(() => {
         let newRows = props.rows ?? rows;
 
