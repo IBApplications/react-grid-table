@@ -93,7 +93,7 @@ export const GridTable = (props) => {
     // });
     // console.log(' ');
 
-    console.log('rest', rest)';'
+    console.log('rest test test', { ...rest });
 
     return (
         <div {...rest} ref={rgtRef} id={id} className={classNames}>
@@ -101,7 +101,7 @@ export const GridTable = (props) => {
             <SortableList
                 forwardRef={tableRef}
                 getContainer={() => tableRef}
-                className="rgt-container"
+                className="rgt-container test"
                 axis="x"
                 lockToContainerEdges
                 distance={10}
